@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Cyber Set Page</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-light: #f4f4f4;
+      --bg-dark: #121212;
+      --text-light: #333;
+      --text-dark: #ddd;
+      --card-light: #fff;
+      --card-dark: #1e1e1e;
+      --accent: #007acc;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: url('sfondo-kali.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-light);
+      margin: 0;
+      padding: 20px;
+      transition: all 0.3s;
+    }
+
+    body.dark-mode {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #search {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      width: 60%;
+      font-size: 16px;
+    }
+
+    .category {
+      background: var(--card-light);
+      margin-bottom: 20px;
+      padding: 20px;
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    body.dark-mode .category {
+      background: var(--card-dark);
+    }
+
+    .category h2 {
+      margin-top: 0;
+    }
+
+    .link-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .link-list li {
+      margin: 8px 0;
+    }
+
+    .link-list a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .link-list a:hover {
+      text-decoration: underline;
+    }
+
+    #toggleDark, #logoutButton {
+      position: absolute;
+      top: 20px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    #toggleDark {
+      right: 80px;
+    }
+
+    #logoutButton {
+      right: 20px;
+    }
+
+    #loginContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      z-index: 1;
+      position: relative;
+    }
+
+    #dashboard {
+      display: none;
+      z-index: 1;
+      position: relative;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div id="overlay"></div>
+
+  <div id="loginContainer">
+    <h2>Accesso</h2>
+    <input type="password" id="password" placeholder="Inserisci password">
+    <button onclick="checkLogin()">Accedi</button>
+  </div>
+
+  <div id="dashboard">
+    <h1>📁 Dashboard Personale</h1>
+    <input id="search" type="text" placeholder="Cerca link...">
+    <button id="toggleDark">🌓</button>
+    <button id="logoutButton" onclick="logout()">🔒 Logout</button>
+    <div id="categories"></div>
+  </div>
+
+  <script>
+    const data = {
+      "Cybersecurity": [
+        { "name": "NIST DB", "url": "https://nvd.nist.gov", "icon": "fa-shield" },
+        { "name": "Exploit-DB", "url": "https://exploit-db.com", "icon": "fa-bug" },
+        { "name": "VirusTotal", "url": "https://www.virustotal.com", "icon": "fa-bug" },
+        { "name": "GreyNoise", "url": "https://www.greynoise.io", "icon": "fa-network-wired" },
+        { "name": "Shodan", "url": "https://www.shodan.io", "icon": "fa-search" },
+        { "name": "Hunter.io", "url": "https://hunter.io", "icon": "fa-envelope" },
+        { "name": "Censys", "url": "https://censys.io", "icon": "fa-globe" },
+        { "name": "HaveIBeenPwned", "url": "https://haveibeenpwned.com", "icon": "fa-user-secret" }
+      ],
+      "Documenti (Cyber Kill Chain)": [
+        { "name": "Reconnaissance Guide", "url": "https://example.com/recon.pdf", "icon": "fa-eye" },
+        { "name": "Weaponization Techniques", "url": "https://example.com/weaponization.pdf", "icon": "fa-wrench" },
+        { "name": "Delivery Vectors", "url": "https://example.com/delivery.pdf", "icon": "fa-paper-plane" },
+        { "name": "Exploitation Methods", "url": "https://example.com/exploitation.pdf", "icon": "fa-bolt" },
+        { "name": "Installation Tactics", "url": "https://example.com/installation.pdf", "icon": "fa-download" },
+        { "name": "C2 Channels", "url": "https://example.com/command-control.pdf", "icon": "fa-satellite" },
+        { "name": "Actions on Objectives", "url": "https://example.com/objectives.pdf", "icon": "fa-flag" }
+      ],
+      "Metasploit Framework": [
+        { "name": "Metasploit Home", "url": "https://www.metasploit.com", "icon": "fa-terminal" },
+        { "name": "Module Library", "url": "https://docs.metasploit.com/modules/", "icon": "fa-cubes" },
+        { "name": "Payloads", "url": "https://docs.metasploit.com/payloads/", "icon": "fa-code" },
+        { "name": "Meterpreter Guide", "url": "https://docs.metasploit.com/meterpreter/", "icon": "fa-laptop-code" }
+      ],
+      "Nmap e Script": [
+        { "name": "Nmap Official", "url": "https://nmap.org", "icon": "fa-network-wired" },
+        { "name": "NSE Script Index", "url": "https://nmap.org/nsedoc/", "icon": "fa-file-code" },
+        { "name": "Top Nmap Commands", "url": "https://cheatography.com/robbie/cheat-sheets/nmap/", "icon": "fa-list" },
+        { "name": "Nmap GitHub", "url": "https://github.com/nmap/nmap", "icon": "fa-github" }
+      ]
+    };
+
+    const pass = "12345";
+
+    function checkLogin() {
+      const input = document.getElementById("password").value;
+      if (input === pass) {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        loadLinks();
+      } else {
+        alert("Password errata");
+      }
+    }
+
+    function logout() {
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("loginContainer").style.display = "flex";
+      document.getElementById("password").value = "";
+    }
+
+    function loadLinks() {
+      const container = document.getElementById("categories");
+      container.innerHTML = "";
+      for (let category in data) {
+        const catDiv = document.createElement("div");
+        catDiv.className = "category";
+        catDiv.innerHTML = `<h2>${category}</h2>`;
+
+        const ul = document.createElement("ul");
+        ul.className = "link-list";
+
+        data[category].forEach(link => {
+          const li = document.createElement("li");
+          li.innerHTML = `<i class="fas ${link.icon}"></i> <a href="${link.url}" target="_blank">${link.name}</a>`;
+          ul.appendChild(li);
+        });
+
+        catDiv.appendChild(ul);
+        container.appendChild(catDiv);
+      }
+    }
+
+    document.getElementById("search").addEventListener("input", function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      document.querySelectorAll(".category").forEach(cat => {
+        cat.style.display = cat.innerText.toLowerCase().includes(searchTerm) ? "block" : "none";
+      });
+    });
+
+    document.getElementById("toggleDark").addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+    });
+  </script>
+</body>
+</html>
