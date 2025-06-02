@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
@@ -100,7 +100,6 @@
       z-index: 1;
     }
 
-    /* Overlay scuro sopra sfondo */
     #overlay {
       position: fixed;
       top: 0;
@@ -113,17 +112,14 @@
   </style>
 </head>
 <body>
-  <!-- Overlay scuro -->
   <div id="overlay"></div>
 
-  <!-- Login -->
   <div id="loginContainer">
     <h2>Accesso</h2>
     <input type="password" id="password" placeholder="Inserisci password">
     <button onclick="checkLogin()">Accedi</button>
   </div>
 
-  <!-- Dashboard -->
   <div id="dashboard">
     <h1>📁 Dashboard Personale</h1>
     <input id="search" type="text" placeholder="Cerca link...">
@@ -177,6 +173,17 @@
         catDiv.appendChild(ul);
         container.appendChild(catDiv);
       }
+	#overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 0;
+	pointer-events: none; /* <-- questa riga permette il click sui contenuti sopra */
+}
+
     }
 
     document.getElementById("search").addEventListener("input", function(e) {
