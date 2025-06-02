@@ -14,7 +14,6 @@
       --card-dark: #1e1e1e;
       --accent: #007acc;
     }
-
     body {
       font-family: Arial, sans-serif;
       background: url('sfondo-kali.jpg') no-repeat center center fixed;
@@ -23,17 +22,15 @@
       margin: 0;
       padding: 20px;
       transition: all 0.3s;
+      overflow-x: hidden;
     }
-
     body.dark-mode {
       background: var(--bg-dark);
       color: var(--text-dark);
     }
-
     h1 {
       text-align: center;
     }
-
     #search {
       display: block;
       margin: 20px auto;
@@ -41,58 +38,48 @@
       width: 60%;
       font-size: 16px;
     }
-
     .category {
       background: var(--card-light);
-      margin-bottom: 20px;
-      padding: 20px;
+      margin: 10px auto;
+      padding: 10px 20px;
+      width: fit-content;
+      max-width: 90%;
       border-left: 5px solid var(--accent);
       border-radius: 8px;
       box-shadow: 0 0 5px rgba(0,0,0,0.1);
       transition: all 0.3s;
     }
-
     body.dark-mode .category {
       background: var(--card-dark);
     }
-
     .category h2 {
       margin-top: 0;
+      font-size: 1.1em;
     }
-
     .link-list {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
-
     .link-list li {
-      margin: 8px 0;
+      margin: 4px 0;
+      font-size: 0.95em;
     }
-
     .link-list a {
       color: inherit;
       text-decoration: none;
     }
-
     .link-list a:hover {
       text-decoration: underline;
     }
-
     #toggleDark, #logoutButton {
       position: absolute;
       top: 20px;
       padding: 6px 12px;
       cursor: pointer;
     }
-
-    #toggleDark {
-      right: 80px;
-    }
-
-    #logoutButton {
-      right: 20px;
-    }
-
+    #toggleDark { right: 80px; }
+    #logoutButton { right: 20px; }
     #loginContainer {
       display: flex;
       flex-direction: column;
@@ -102,13 +89,11 @@
       z-index: 1;
       position: relative;
     }
-
     #dashboard {
       display: none;
       z-index: 1;
       position: relative;
     }
-
     #overlay {
       position: fixed;
       top: 0;
@@ -118,65 +103,95 @@
       background: rgba(0, 0, 0, 0.5);
       z-index: -1;
     }
+    .animated-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: -2;
+      background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+      font-size: 0.9em;
+    }
   </style>
 </head>
 <body>
+  <div class="animated-bg"></div>
   <div id="overlay"></div>
-
   <div id="loginContainer">
     <h2>Accesso</h2>
     <input type="password" id="password" placeholder="Inserisci password">
     <button onclick="checkLogin()">Accedi</button>
   </div>
-
   <div id="dashboard">
     <h1>📁 Dashboard Personale</h1>
     <input id="search" type="text" placeholder="Cerca link...">
     <button id="toggleDark">🌓</button>
     <button id="logoutButton" onclick="logout()">🔒 Logout</button>
     <div id="categories"></div>
+    <footer>
+      <p>🔗 Seguici su <a href="#">LinkedIn</a> | <a href="#">GitHub</a> | <a href="#">Twitter</a></p>
+      <p>© 2025 Cyber Security Dashboard — <strong>@set</strong></p>
+    </footer>
   </div>
-
   <script>
+    const encryptedPass = "MTIzNDU=";
     const data = {
-      "Cybersecurity": [
-        { "name": "NIST DB", "url": "https://nvd.nist.gov", "icon": "fa-shield" },
-        { "name": "Exploit-DB", "url": "https://exploit-db.com", "icon": "fa-bug" },
-        { "name": "VirusTotal", "url": "https://www.virustotal.com", "icon": "fa-bug" },
-        { "name": "GreyNoise", "url": "https://www.greynoise.io", "icon": "fa-network-wired" },
-        { "name": "Shodan", "url": "https://www.shodan.io", "icon": "fa-search" },
-        { "name": "Hunter.io", "url": "https://hunter.io", "icon": "fa-envelope" },
-        { "name": "Censys", "url": "https://censys.io", "icon": "fa-globe" },
-        { "name": "HaveIBeenPwned", "url": "https://haveibeenpwned.com", "icon": "fa-user-secret" }
+      "Reconnaissance & OSINT": [
+        { "name": "Shodan (manuale)", "url": "https://help.shodan.io/", "icon": "fa-search" },
+        { "name": "Censys Docs", "url": "https://censys.io/docs", "icon": "fa-globe" },
+        { "name": "theHarvester", "url": "https://github.com/laramies/theHarvester", "icon": "fa-users" }
       ],
-      "Documenti (Cyber Kill Chain)": [
-        { "name": "Reconnaissance Guide", "url": "https://example.com/recon.pdf", "icon": "fa-eye" },
-        { "name": "Weaponization Techniques", "url": "https://example.com/weaponization.pdf", "icon": "fa-wrench" },
-        { "name": "Delivery Vectors", "url": "https://example.com/delivery.pdf", "icon": "fa-paper-plane" },
-        { "name": "Exploitation Methods", "url": "https://example.com/exploitation.pdf", "icon": "fa-bolt" },
-        { "name": "Installation Tactics", "url": "https://example.com/installation.pdf", "icon": "fa-download" },
-        { "name": "C2 Channels", "url": "https://example.com/command-control.pdf", "icon": "fa-satellite" },
-        { "name": "Actions on Objectives", "url": "https://example.com/objectives.pdf", "icon": "fa-flag" }
+      "Protocol Testing": [
+        { "name": "Hydra (SSH/POP3/FTP)", "url": "https://github.com/vanhauser-thc/thc-hydra", "icon": "fa-key" },
+        { "name": "Onesixtyone (SNMP)", "url": "https://github.com/trailofbits/onesixtyone", "icon": "fa-sitemap" },
+        { "name": "Nikto (HTTP)", "url": "https://cirt.net/Nikto2", "icon": "fa-globe" },
+        { "name": "Enum4linux (SMB)", "url": "https://tools.kali.org/information-gathering/enum4linux", "icon": "fa-server" },
+        { "name": "Medusa (IMAP)", "url": "https://github.com/jmk-foofus/medusa", "icon": "fa-envelope" }
       ],
-      "Metasploit Framework": [
-        { "name": "Metasploit Home", "url": "https://www.metasploit.com", "icon": "fa-terminal" },
-        { "name": "Module Library", "url": "https://docs.metasploit.com/modules/", "icon": "fa-cubes" },
-        { "name": "Payloads", "url": "https://docs.metasploit.com/payloads/", "icon": "fa-code" },
-        { "name": "Meterpreter Guide", "url": "https://docs.metasploit.com/meterpreter/", "icon": "fa-laptop-code" }
+      "OS Vulnerability Assessment": [
+        { "name": "Lynis (Linux)", "url": "https://cisofy.com/lynis/", "icon": "fa-linux" },
+        { "name": "Win Exploit Suggester", "url": "https://github.com/AonCyberLabs/Windows-Exploit-Suggester", "icon": "fa-windows" }
       ],
-      "Nmap e Script": [
-        { "name": "Nmap Official", "url": "https://nmap.org", "icon": "fa-network-wired" },
-        { "name": "NSE Script Index", "url": "https://nmap.org/nsedoc/", "icon": "fa-file-code" },
-        { "name": "Top Nmap Commands", "url": "https://cheatography.com/robbie/cheat-sheets/nmap/", "icon": "fa-list" },
-        { "name": "Nmap GitHub", "url": "https://github.com/nmap/nmap", "icon": "fa-github" }
+      "Penetration Testing Tools": [
+        { "name": "Metasploit Framework", "url": "https://www.metasploit.com", "icon": "fa-terminal" },
+        { "name": "MSFconsole Cheatsheet", "url": "https://www.rapid7.com/blog/post/2017/08/03/metasploit-cheat-sheet/", "icon": "fa-book" },
+        { "name": "Burp Suite", "url": "https://portswigger.net/burp", "icon": "fa-spider" }
+      ],
+      "Vulnerability Scanners": [
+        { "name": "OpenVAS (Greenbone)", "url": "https://www.greenbone.net/en/", "icon": "fa-lock" },
+        { "name": "Nessus", "url": "https://www.tenable.com/products/nessus", "icon": "fa-shield-alt" },
+        { "name": "Nmap Scripting Engine", "url": "https://nmap.org/book/nse.html", "icon": "fa-cogs" }
+      ],
+      "Reportistica e Metodologie": [
+        { "name": "Report PT Template", "url": "https://github.com/sample/pen-test-report-template", "icon": "fa-file-alt" },
+        { "name": "VA Report Template", "url": "https://github.com/sample/va-report-template", "icon": "fa-clipboard" },
+        { "name": "OWASP WSTG", "url": "https://owasp.org/www-project-web-security-testing-guide/", "icon": "fa-book" },
+        { "name": "CVSS Scoring", "url": "https://www.first.org/cvss", "icon": "fa-cogs" }
+      ],
+      "Social & Strumenti": [
+        { "name": "Exploit-DB", "url": "https://www.exploit-db.com", "icon": "fa-bug" },
+        { "name": "GTFOBins", "url": "https://gtfobins.github.io/", "icon": "fa-tools" },
+        { "name": "Reddit /r/netsec", "url": "https://www.reddit.com/r/netsec/", "icon": "fa-comments" }
       ]
     };
-
-    const pass = "12345";
-
+    function decodeBase64(str) {
+      return atob(str);
+    }
     function checkLogin() {
       const input = document.getElementById("password").value;
-      if (input === pass) {
+      if (input === decodeBase64(encryptedPass)) {
         document.getElementById("loginContainer").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
         loadLinks();
@@ -184,13 +199,11 @@
         alert("Password errata");
       }
     }
-
     function logout() {
       document.getElementById("dashboard").style.display = "none";
       document.getElementById("loginContainer").style.display = "flex";
       document.getElementById("password").value = "";
     }
-
     function loadLinks() {
       const container = document.getElementById("categories");
       container.innerHTML = "";
@@ -198,28 +211,23 @@
         const catDiv = document.createElement("div");
         catDiv.className = "category";
         catDiv.innerHTML = `<h2>${category}</h2>`;
-
         const ul = document.createElement("ul");
         ul.className = "link-list";
-
         data[category].forEach(link => {
           const li = document.createElement("li");
-          li.innerHTML = `<i class="fas ${link.icon}"></i> <a href="${link.url}" target="_blank">${link.name}</a>`;
+          li.innerHTML = `<i class='fas ${link.icon}'></i> <a href='${link.url}' target='_blank'>${link.name}</a>`;
           ul.appendChild(li);
         });
-
         catDiv.appendChild(ul);
         container.appendChild(catDiv);
       }
     }
-
     document.getElementById("search").addEventListener("input", function(e) {
       const searchTerm = e.target.value.toLowerCase();
       document.querySelectorAll(".category").forEach(cat => {
         cat.style.display = cat.innerText.toLowerCase().includes(searchTerm) ? "block" : "none";
       });
     });
-
     document.getElementById("toggleDark").addEventListener("click", () => {
       document.body.classList.toggle("dark-mode");
     });
