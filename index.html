@@ -17,7 +17,8 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: url('https://www.kali.org/images/kali-2023/kali-2023.1.png') no-repeat center center fixed;
+      background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), 
+                  url('sfondo-kali.jpg') no-repeat center center fixed;
       background-size: cover;
       color: var(--text-light);
       margin: 0;
@@ -27,8 +28,7 @@
     }
 
     body.dark-mode {
-      background-color: var(--bg-dark);
-      background-image: none;
+      background: var(--bg-dark);
       color: var(--text-dark);
     }
 
@@ -111,11 +111,6 @@
       position: relative;
     }
 
-    /* Overlay disabilitato */
-    #overlay {
-      display: none;
-    }
-
     footer {
       text-align: center;
       padding: 20px;
@@ -125,8 +120,6 @@
   </style>
 </head>
 <body>
-  <!-- Sfondo funzionante, overlay disattivato -->
-  <div id="overlay"></div>
   <div id="loginContainer">
     <h2>Accesso</h2>
     <input type="password" id="password" placeholder="Inserisci password">
