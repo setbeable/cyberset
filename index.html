@@ -49,7 +49,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      max-width: 450px;
+      max-width: 400px;
       margin-left: auto;
       margin-right: 20px;
     }
@@ -126,29 +126,61 @@
       color: #666;
       font-size: 0.9em;
     }
+
+    #newsSidebar h2 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    #newsSidebar li {
+      margin: 8px 0;
+    }
+
+    #newsSidebar a {
+      text-decoration: none;
+      color: var(--text-light);
+    }
+
+    body.dark-mode #newsSidebar a {
+      color: var(--text-dark);
+    }
+
+    #newsSidebar a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-	<div style="text-align: center;">
-	  <h1 style="margin-top: 0;">Cyber Set Page</h1>
-	</div>
-  <div id="loginContainer">
-    <h2>Accesso</h2>
-    <input type="password" id="password" placeholder="Inserisci password">
-    <button onclick="checkLogin()">Accedi</button>
-  </div>
-  <div id="dashboard">
-    <h1>📁 Dashboard Personale</h1>
-    <input id="search" type="text" placeholder="Cerca link...">
-    <button id="toggleDark">🌓</button>
-    <button id="logoutButton" onclick="logout()">🔒 Logout</button>
-    <div id="categories"></div>
-    <footer>
-      <p>🔗 Seguici su <a href="#">LinkedIn</a> | <a href="#">GitHub</a> | <a href="#">Twitter</a></p>
-      <p>© 2025 Cyber Security Dashboard — <strong>@set</strong></p>
-    </footer>
+  <div style="display: flex;">
+    <aside id="newsSidebar" style="width: 25%; padding-right: 20px;">
+      <h2>📰 Cyber News</h2>
+      <ul id="newsList" style="list-style: none; padding-left: 0; font-size: 0.9em;"></ul>
+    </aside>
+    <main style="width: 75%;">
+      <div style="text-align: center;">
+        <h1 style="margin-top: 0;">Cyber Set Page</h1>
+      </div>
+      <div id="loginContainer">
+        <h2>Accesso</h2>
+        <input type="password" id="password" placeholder="Inserisci password">
+        <button onclick="checkLogin()">Accedi</button>
+      </div>
+      <div id="dashboard">
+        <h1>📁 Dashboard Personale</h1>
+        <input id="search" type="text" placeholder="Cerca link...">
+        <button id="toggleDark">🌓</button>
+        <button id="logoutButton" onclick="logout()">🔒 Logout</button>
+        <div id="categories"></div>
+        <footer>
+          <p>🔗 Seguici su <a href="#">LinkedIn</a> | <a href="#">GitHub</a> | <a href="#">Twitter</a></p>
+          <p>© 2025 Cyber Security Dashboard — <strong>@set</strong></p>
+        </footer>
+      </div>
+    </main>
   </div>
   <script>
+    const encryptedPass = "MTIzNDU=";
+
     const encryptedPass = "MTIzNDU=";
 
     const data = {
@@ -270,12 +302,42 @@
       document.body.classList.toggle("dark-mode");
     });
 
+    async function loadCyberNews() {
+      const feedUrls = [
+        "https://www.acn.gov.it/feed",
+        "https://www.redhotcyber.com/feed/",
+        "https://www.cybersecurity360.it/feed/",
+        "https://thehackernews.com/feeds/posts/default?alt=rss",
+        "https://feeds.feedburner.com/KrebsOnSecurity",
+        "https://www.bleepingcomputer.com/feed/"
+      ];
+      const proxy = "https://api.allorigins.win/get?url=";
+      const newsList = document.getElementById("newsList");
+      for (let url of feedUrls) {
+        try {
+          const res = await fetch(proxy + encodeURIComponent(url));
+          const rss = new window.DOMParser().parseFromString(JSON.parse(await res.text()).contents, "text/xml");
+          const items = rss.querySelectorAll("item");
+          for (let i = 0; i < Math.min(2, items.length); i++) {
+            const title = items[i].querySelector("title").textContent;
+            const link = items[i].querySelector("link").textContent;
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="${link}" target="_blank">🟢 ${title}</a>`;
+            newsList.appendChild(li);
+          }
+        } catch (e) {
+          console.warn("Errore caricamento feed", url);
+        }
+      }
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       if (getCookie("session") === "ok") {
         document.getElementById("loginContainer").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
         loadLinks();
       }
+      loadCyberNews();
     });
   </script>
 </body>
