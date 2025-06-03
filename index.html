@@ -139,22 +139,75 @@
       color: #666;
       font-size: 0.9em;
     }
+    .tree-container {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    .tree ul {
+      padding-top: 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .tree li {
+      list-style-type: none;
+      text-align: center;
+      margin: 0 10px;
+      position: relative;
+    }
+    .tree li::before, .tree li::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      border-top: 2px solid #ccc;
+      width: 50%;
+      height: 20px;
+    }
+    .tree li::before { left: -50%; }
+    .tree li::after { right: -50%; }
+    .tree li:first-child::before,
+    .tree li:last-child::after {
+      content: none;
+    }
+    .tree a {
+      display: inline-block;
+      padding: 8px 12px;
+      border: 2px solid var(--accent);
+      border-radius: 6px;
+      background: var(--card-light);
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .tree a:hover {
+      background: var(--accent);
+      color: white;
+    }
+    body.dark-mode .tree a {
+      background: var(--card-dark);
+      color: var(--accent);
+    }
   </style>
 </head>
 <body>
   <div style="text-align: center;">
     <h1 style="margin-top: 0;">Cyber Set Page</h1>
   </div>
+
   <div id="loginContainer">
     <h2>Accesso</h2>
     <input type="password" id="password" placeholder="Inserisci password">
     <button onclick="checkLogin()">Accedi</button>
   </div>
+
   <div id="dashboard">
     <h1>📁 Dashboard Personale</h1>
     <input id="search" type="text" placeholder="Cerca link...">
     <button id="toggleDark">🌓</button>
     <button id="logoutButton" onclick="logout()">🔒 Logout</button>
+
     <div id="dashboard-content">
       <div id="newsFeed">
         <button class="close-btn" onclick="document.getElementById('newsFeed').style.display='none'">×</button>
@@ -163,11 +216,42 @@
       </div>
       <div id="categories"></div>
     </div>
+
+    <div class="tree-container">
+      <div class="tree">
+        <ul>
+          <li>
+            <a href="#">Menu</a>
+            <ul>
+              <li><a href="#">Sezione 1</a>
+                <ul>
+                  <li><a href="https://esempio.com/a">Link A</a></li>
+                  <li><a href="https://esempio.com/b">Link B</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Sezione 2</a>
+                <ul>
+                  <li><a href="https://esempio.com/c">Link C</a></li>
+                  <li><a href="https://esempio.com/d">Link D</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Sezione 3</a>
+                <ul>
+                  <li><a href="https://esempio.com/e">Link E</a></li>
+                  <li><a href="https://esempio.com/f">Link F</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
     <footer>
       <p>🔗 Seguici su <a href="#">LinkedIn</a> | <a href="#">GitHub</a> | <a href="#">Twitter</a></p>
       <p>© 2025 Cyber Security Dashboard — <strong>@set</strong></p>
     </footer>
   </div>
+
   <script>
     const encryptedPass = "MTIzNDU=";
     function decodeBase64(str) { return atob(str); }
@@ -177,7 +261,7 @@
     function getCookie(name) {
       const nameEQ = name + "=";
       const ca = document.cookie.split(';');
-      for(let i = 0; i < ca.length; i++) {
+      for (let i = 0; i < ca.length; i++) {
         let c = ca[i];
         while (c.charAt(0) === ' ') c = c.substring(1, c.length);
         if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
