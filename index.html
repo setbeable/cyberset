@@ -120,68 +120,81 @@
       position: relative;
     }
 
+    #newsFeed {
+      width: 300px;
+      margin-right: 20px;
+    }
+
+    #newsFeed h3 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    #newsFeed ul {
+      list-style: none;
+      padding-left: 0;
+      font-size: 0.9em;
+    }
+
+    #newsFeed li {
+      margin: 8px 0;
+    }
+
+    #newsFeed a {
+      text-decoration: none;
+      color: var(--text-light);
+    }
+
+    body.dark-mode #newsFeed a {
+      color: var(--text-dark);
+    }
+
+    #newsFeed a:hover {
+      text-decoration: underline;
+    }
+
     footer {
       text-align: center;
       padding: 20px;
       color: #666;
       font-size: 0.9em;
     }
-
-    #newsSidebar h2 {
-      font-size: 1.2em;
-      margin-bottom: 10px;
-    }
-
-    #newsSidebar li {
-      margin: 8px 0;
-    }
-
-    #newsSidebar a {
-      text-decoration: none;
-      color: var(--text-light);
-    }
-
-    body.dark-mode #newsSidebar a {
-      color: var(--text-dark);
-    }
-
-    #newsSidebar a:hover {
-      text-decoration: underline;
-    }
   </style>
 </head>
 <body>
-  <div style="display: flex;">
-    <aside id="newsSidebar" style="width: 25%; padding-right: 20px;">
-      <h2>📰 Cyber News</h2>
-      <ul id="newsList" style="list-style: none; padding-left: 0; font-size: 0.9em;"></ul>
-    </aside>
-    <main style="width: 75%;">
-      <div style="text-align: center;">
-        <h1 style="margin-top: 0;">Cyber Set Page</h1>
+  <div style="text-align: center;">
+    <h1 style="margin-top: 0;">Cyber Set Page</h1>
+  </div>
+
+  <div id="loginContainer">
+    <h2>Accesso</h2>
+    <input type="password" id="password" placeholder="Inserisci password">
+    <button onclick="checkLogin()">Accedi</button>
+  </div>
+
+  <div id="dashboard">
+    <h1>📁 Dashboard Personale</h1>
+    <div style="display: flex;">
+      <div id="newsFeed">
+        <h3>📰 Cybersecurity News</h3>
+        <ul id="newsList"></ul>
       </div>
-      <div id="loginContainer">
-        <h2>Accesso</h2>
-        <input type="password" id="password" placeholder="Inserisci password">
-        <button onclick="checkLogin()">Accedi</button>
-      </div>
-      <div id="dashboard">
-        <h1>📁 Dashboard Personale</h1>
+      <div style="flex-grow: 1;">
         <input id="search" type="text" placeholder="Cerca link...">
         <button id="toggleDark">🌓</button>
         <button id="logoutButton" onclick="logout()">🔒 Logout</button>
         <div id="categories"></div>
-        <footer>
-          <p>🔗 Seguici su <a href="#">LinkedIn</a> | <a href="#">GitHub</a> | <a href="#">Twitter</a></p>
-          <p>© 2025 Cyber Security Dashboard — <strong>@set</strong></p>
-        </footer>
       </div>
-    </main>
+    </div>
+    <footer>
+      <p>🔗 Seguici su <a href="#">LinkedIn</a> | <a href="#">GitHub</a> | <a href="#">Twitter</a></p>
+      <p>© 2025 Cyber Security Dashboard — <strong>@set</strong></p>
+    </footer>
   </div>
-  <script>
-    const encryptedPass = "MTIzNDU=";
 
-    const encryptedPass = "MTIzNDU=";
+  <script>
+	const encryptedPass = "MTIzNDU=";
+
 
     const data = {
       "Reconnaissance & OSINT": [
@@ -260,6 +273,7 @@
         document.getElementById("loginContainer").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
         loadLinks();
+        loadNews();
       } else {
         alert("Password errata");
       }
@@ -291,18 +305,7 @@
       }
     }
 
-    document.getElementById("search").addEventListener("input", function(e) {
-      const searchTerm = e.target.value.toLowerCase();
-      document.querySelectorAll(".category").forEach(cat => {
-        cat.style.display = cat.innerText.toLowerCase().includes(searchTerm) ? "block" : "none";
-      });
-    });
-
-    document.getElementById("toggleDark").addEventListener("click", () => {
-      document.body.classList.toggle("dark-mode");
-    });
-
-    async function loadCyberNews() {
+    async function loadNews() {
       const feedUrls = [
         "https://www.acn.gov.it/feed",
         "https://www.redhotcyber.com/feed/",
@@ -331,13 +334,24 @@
       }
     }
 
+    document.getElementById("search").addEventListener("input", function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      document.querySelectorAll(".category").forEach(cat => {
+        cat.style.display = cat.innerText.toLowerCase().includes(searchTerm) ? "block" : "none";
+      });
+    });
+
+    document.getElementById("toggleDark").addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+    });
+
     window.addEventListener("DOMContentLoaded", () => {
       if (getCookie("session") === "ok") {
         document.getElementById("loginContainer").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
         loadLinks();
+        loadNews();
       }
-      loadCyberNews();
     });
   </script>
 </body>
