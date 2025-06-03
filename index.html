@@ -17,7 +17,7 @@
 
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)), 
+      background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)),
                   url('sfondo-kali.jpg') no-repeat center center fixed;
       background-size: cover;
       color: var(--text-light);
@@ -28,7 +28,8 @@
     }
 
     body.dark-mode {
-      background: var(--bg-dark);
+      background-color: var(--bg-dark);
+      background-image: none;
       color: var(--text-dark);
     }
 
@@ -44,27 +45,25 @@
       font-size: 16px;
     }
 
-	#categories {
-	  display: flex;
-	  flex-direction: column;
-	  align-items: flex-end;
-	  max-width: 450px;
-	  margin-left: auto;
-	  margin-right: 20px;
-	}
+    #categories {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      max-width: 450px;
+      margin-left: auto;
+      margin-right: 20px;
+    }
 
-	.category {
-	  width: 100%;
-	  background: var(--card-light);
-	  margin: 10px 0;
-	  padding: 10px 20px;
-	  border-left: 5px solid var(--accent);
-	  border-radius: 8px;
-	  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-	  transition: all 0.3s;
-	}
-
-
+    .category {
+      width: 100%;
+      background: var(--card-light);
+      margin: 10px 0;
+      padding: 10px 20px;
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
 
     body.dark-mode .category {
       background: var(--card-dark);
@@ -148,6 +147,7 @@
   </div>
   <script>
     const encryptedPass = "MTIzNDU=";
+
     const data = {
       "Reconnaissance & OSINT": [
         { "name": "Shodan (manuale)", "url": "https://help.shodan.io/", "icon": "fa-search" },
@@ -185,65 +185,57 @@
         { "name": "Exploit-DB", "url": "https://www.exploit-db.com", "icon": "fa-bug" },
         { "name": "GTFOBins", "url": "https://gtfobins.github.io/", "icon": "fa-tools" },
         { "name": "Reddit /r/netsec", "url": "https://www.reddit.com/r/netsec/", "icon": "fa-comments" }
-	  ],
-		"Python & Manuali": [
-		{ "name": "Python Pentest Cheatsheet", "url": "https://github.com/DanMcInerney/pentesters-py-recon", "icon": "fa-code" },
-		{ "name": "Blue Team Handbook", "url": "https://www.blueteamhandbook.com", "icon": "fa-shield-alt" },
-		{ "name": "Red Team Field Manual", "url": "https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques", "icon": "fa-skull-crossbones" },
-		{ "name": "Python Security Tools", "url": "https://github.com/topics/python-security", "icon": "fa-python" },
-		{ "name": "Violent Python (Libro)", "url": "https://www.amazon.com/Violent-Python-Cookbook-Penetration-Engineers/dp/1597499579", "icon": "fa-book" }
-	  ]
-
+      ],
+      "Python & Manuali": [
+        { "name": "Python Pentest Cheatsheet", "url": "https://github.com/DanMcInerney/pentesters-py-recon", "icon": "fa-code" },
+        { "name": "Blue Team Handbook", "url": "https://www.blueteamhandbook.com", "icon": "fa-shield-alt" },
+        { "name": "Red Team Field Manual", "url": "https://github.com/mantvydasb/RedTeam-Tactics-and-Techniques", "icon": "fa-skull-crossbones" },
+        { "name": "Python Security Tools", "url": "https://github.com/topics/python-security", "icon": "fa-python" },
+        { "name": "Violent Python (Libro)", "url": "https://www.amazon.com/Violent-Python-Cookbook-Penetration-Engineers/dp/1597499579", "icon": "fa-book" }
+      ]
     };
 
     function decodeBase64(str) {
       return atob(str);
     }
 
-	function setCookie(name, value, days) {
-	  let expires = "";
-	  if (days) {
-		const date = new Date();
-		date.setTime(date.getTime() + (days*24*60*60*1000));
-		expires = "; expires=" + date.toUTCString();
-	  }
-	  document.cookie = name + "=" + (value || "") + expires + "; path=/";
-	}
+    function setCookie(name, value) {
+      document.cookie = name + "=" + (value || "") + "; path=/";
+    }
 
-	function getCookie(name) {
-	  const nameEQ = name + "=";
-	  const ca = document.cookie.split(';');
-	  for(let i=0;i < ca.length;i++) {
-		let c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	  }
-	  return null;
-	}
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const ca = document.cookie.split(';');
+      for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
 
-	function eraseCookie(name) {
-	  document.cookie = name + '=; Max-Age=-99999999;';
-	}
+    function eraseCookie(name) {
+      document.cookie = name + '=; Max-Age=-99999999;';
+    }
 
-	function checkLogin() {
-	  const input = document.getElementById("password").value;
-	  if (input === decodeBase64(encryptedPass)) {
-		setCookie("session", "ok", 1); // sessione di 1 giorno
-		document.getElementById("loginContainer").style.display = "none";
-		document.getElementById("dashboard").style.display = "block";
-		loadLinks();
-	  } else {
-		alert("Password errata");
-	  }
-	}
+    function checkLogin() {
+      const input = document.getElementById("password").value;
+      if (input === decodeBase64(encryptedPass)) {
+        setCookie("session", "ok");
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        loadLinks();
+      } else {
+        alert("Password errata");
+      }
+    }
 
-	function logout() {
-	  eraseCookie("session");
-	  document.getElementById("dashboard").style.display = "none";
-	  document.getElementById("loginContainer").style.display = "flex";
-	  document.getElementById("password").value = "";
-	}
-
+    function logout() {
+      eraseCookie("session");
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("loginContainer").style.display = "flex";
+      document.getElementById("password").value = "";
+    }
 
     function loadLinks() {
       const container = document.getElementById("categories");
@@ -273,15 +265,15 @@
 
     document.getElementById("toggleDark").addEventListener("click", () => {
       document.body.classList.toggle("dark-mode");
-    }
-		window.addEventListener("DOMContentLoaded", () => {
-	  if (getCookie("session") === "ok") {
-		document.getElementById("loginContainer").style.display = "none";
-		document.getElementById("dashboard").style.display = "block";
-		loadLinks();
-	  }
-	});
+    });
 
+    window.addEventListener("DOMContentLoaded", () => {
+      if (getCookie("session") === "ok") {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        loadLinks();
+      }
+    });
   </script>
 </body>
 </html>
