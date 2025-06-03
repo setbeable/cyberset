@@ -45,6 +45,47 @@
       font-size: 16px;
     }
 
+    #dashboard-content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    #newsFeed {
+      width: 320px;
+      max-height: 500px;
+      overflow-y: auto;
+      padding: 15px;
+      background: var(--card-light);
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+    #newsFeed .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      color: var(--text-light);
+    }
+
+    body.dark-mode #newsFeed {
+      background: var(--card-dark);
+      border-color: #444;
+    }
+
+    body.dark-mode #newsFeed .close-btn {
+      color: var(--text-dark);
+    }
+
     #categories {
       display: flex;
       flex-direction: column;
@@ -120,39 +161,6 @@
       position: relative;
     }
 
-    #newsFeed {
-      width: 300px;
-      margin-right: 20px;
-    }
-
-    #newsFeed h3 {
-      font-size: 1.2em;
-      margin-bottom: 10px;
-    }
-
-    #newsFeed ul {
-      list-style: none;
-      padding-left: 0;
-      font-size: 0.9em;
-    }
-
-    #newsFeed li {
-      margin: 8px 0;
-    }
-
-    #newsFeed a {
-      text-decoration: none;
-      color: var(--text-light);
-    }
-
-    body.dark-mode #newsFeed a {
-      color: var(--text-dark);
-    }
-
-    #newsFeed a:hover {
-      text-decoration: underline;
-    }
-
     footer {
       text-align: center;
       padding: 20px;
@@ -174,16 +182,15 @@
 
   <div id="dashboard">
     <h1>📁 Dashboard Personale</h1>
-    <div style="display: flex;">
+    <input id="search" type="text" placeholder="Cerca link...">
+    <button id="toggleDark">🌓</button>
+    <button id="logoutButton" onclick="logout()">🔒 Logout</button>
+    <div id="dashboard-content">
+      <div id="categories"></div>
       <div id="newsFeed">
+        <button class="close-btn" onclick="document.getElementById('newsFeed').style.display='none'">×</button>
         <h3>📰 Cybersecurity News</h3>
         <ul id="newsList"></ul>
-      </div>
-      <div style="flex-grow: 1;">
-        <input id="search" type="text" placeholder="Cerca link...">
-        <button id="toggleDark">🌓</button>
-        <button id="logoutButton" onclick="logout()">🔒 Logout</button>
-        <div id="categories"></div>
       </div>
     </div>
     <footer>
@@ -191,10 +198,51 @@
       <p>© 2025 Cyber Security Dashboard — <strong>@set</strong></p>
     </footer>
   </div>
-
   <script>
-	const encryptedPass = "MTIzNDU=";
+    const encryptedPass = "MTIzNDU=";
 
+    function decodeBase64(str) {
+      return atob(str);
+    }
+
+    function setCookie(name, value) {
+      document.cookie = name + "=" + (value || "") + "; path=/";
+    }
+
+    function getCookie(name) {
+      const nameEQ = name + "=";
+      const ca = document.cookie.split(';');
+      for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
+
+    function eraseCookie(name) {
+      document.cookie = name + '=; Max-Age=-99999999;';
+    }
+
+    function checkLogin() {
+      const input = document.getElementById("password").value;
+      if (input === decodeBase64(encryptedPass)) {
+        setCookie("session", "ok");
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        loadLinks();
+        loadNews();
+      } else {
+        alert("Password errata");
+      }
+    }
+
+    function logout() {
+      eraseCookie("session");
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("loginContainer").style.display = "flex";
+      document.getElementById("password").value = "";
+    }
 
     const data = {
       "Reconnaissance & OSINT": [
@@ -242,49 +290,6 @@
         { "name": "Violent Python (Libro)", "url": "https://www.amazon.com/Violent-Python-Cookbook-Penetration-Engineers/dp/1597499579", "icon": "fa-book" }
       ]
     };
-
-    function decodeBase64(str) {
-      return atob(str);
-    }
-
-    function setCookie(name, value) {
-      document.cookie = name + "=" + (value || "") + "; path=/";
-    }
-
-    function getCookie(name) {
-      const nameEQ = name + "=";
-      const ca = document.cookie.split(';');
-      for(let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-      }
-      return null;
-    }
-
-    function eraseCookie(name) {
-      document.cookie = name + '=; Max-Age=-99999999;';
-    }
-
-    function checkLogin() {
-      const input = document.getElementById("password").value;
-      if (input === decodeBase64(encryptedPass)) {
-        setCookie("session", "ok");
-        document.getElementById("loginContainer").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        loadLinks();
-        loadNews();
-      } else {
-        alert("Password errata");
-      }
-    }
-
-    function logout() {
-      eraseCookie("session");
-      document.getElementById("dashboard").style.display = "none";
-      document.getElementById("loginContainer").style.display = "flex";
-      document.getElementById("password").value = "";
-    }
 
     function loadLinks() {
       const container = document.getElementById("categories");
