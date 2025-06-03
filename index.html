@@ -37,118 +37,11 @@
       width: 60%;
       font-size: 16px;
     }
-    #dashboard-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
-      margin-top: 20px;
-      position: relative;
-    }
-		#newsFeed {
-	  width: 300px;
-	  max-height: 600px;
-	  overflow-y: auto;
-	  padding: 15px;
-	  background: var(--card-light);
-	  border: 1px solid #ccc;
-	  border-radius: 10px;
-	  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-	  margin-top: -30px; /* 🔧 aggiungi questa riga */
-	}
-
-    #newsFeed .close-btn {
-      position: absolute;
-      top: -30px;
-      right: 10px;
-      background: none;
-      border: none;
-      font-size: 16px;
-      cursor: pointer;
-      color: var(--text-light);
-    }
-    body.dark-mode #newsFeed {
-      background: var(--card-dark);
-      border-color: #444;
-    }
-    body.dark-mode #newsFeed .close-btn {
-      color: var(--text-dark);
-    }
-    #categories {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      max-width: 600px;
-      margin-left: auto;
-	  margin-top: -30px;
-    }
-    .category {
+	 .tree-wrapper {
       width: 100%;
-      background: var(--card-light);
-      margin: 10px 0;
-      padding: 10px 20px;
-      border-left: 5px solid var(--accent);
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-      transition: all 0.3s;
+      margin-top: 40px;
+      margin-bottom: 20px;
     }
-    body.dark-mode .category {
-      background: var(--card-dark);
-    }
-    .category h2 {
-      margin-top: 0;
-      font-size: 1.1em;
-    }
-    .link-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .link-list li {
-      margin: 4px 0;
-      font-size: 0.95em;
-    }
-    .link-list a {
-      color: inherit;
-      text-decoration: none;
-    }
-    .link-list a:hover {
-      text-decoration: underline;
-    }
-    #toggleDark, #logoutButton {
-      position: absolute;
-      top: 20px;
-      padding: 6px 12px;
-      cursor: pointer;
-    }
-    #toggleDark { right: 80px; }
-    #logoutButton { right: 20px; }
-    #loginContainer {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      z-index: 1;
-      position: relative;
-    }
-    #dashboard {
-      display: none;
-      z-index: 1;
-      position: relative;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #666;
-      font-size: 0.9em;
-    }
-    .tree-container {
-      display: flex;
-      justify-content: center;
-      margin: 40px 0;
-    }
-
     .tree {
       display: grid;
       place-items: center;
@@ -221,11 +114,127 @@
       background: var(--accent);
       color: #fff;
     }
+    .tree-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
     body.dark-mode .tree a {
       background: var(--card-dark);
       color: var(--accent);
     }
-  </style>
+	#dashboard-content {
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: flex-start; /* già presente, assicurati che ci sia */
+	  margin-top: 0; /* se c'è altro margine, rimuovilo o riducilo */
+	  padding-top: 0;
+	  position: relative;
+	  outline: 1px dashed red;
+	}
+
+	#newsFeed {
+	  width: 300px;
+	  max-height: 600px;
+	  overflow-y: auto;
+	  padding: 15px;
+	  background: var(--card-light);
+	  border: 1px solid #ccc;
+	  border-radius: 10px;
+	  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	  margin-top: -30px; /* 🔧 aggiungi questa riga */
+	  outline: 1px dashed green;
+	}
+
+    #newsFeed .close-btn {
+      position: absolute;
+      top: -30px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      color: var(--text-light);
+    }
+    body.dark-mode #newsFeed {
+      background: var(--card-dark);
+      border-color: #444;
+    }
+    body.dark-mode #newsFeed .close-btn {
+      color: var(--text-dark);
+    }
+    #categories {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      max-width: 600px;
+      margin-left: auto;
+	  margin-top: -30px;
+	  outline: 1px dashed blue;
+    }
+    .category {
+      width: 100%;
+      background: var(--card-light);
+      margin: 10px 0;
+      padding: 10px 20px;
+      border-left: 5px solid var(--accent);
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+    body.dark-mode .category {
+      background: var(--card-dark);
+    }
+    .category h2 {
+      margin-top: 0;
+      font-size: 1.1em;
+    }
+    .link-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .link-list li {
+      margin: 4px 0;
+      font-size: 0.95em;
+    }
+    .link-list a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .link-list a:hover {
+      text-decoration: underline;
+    }
+    #toggleDark, #logoutButton {
+      position: absolute;
+      top: 20px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    #toggleDark { right: 80px; }
+    #logoutButton { right: 20px; }
+    #loginContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      z-index: 1;
+      position: relative;
+    }
+    #dashboard {
+      display: none;
+      z-index: 1;
+      position: relative;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9em;
+    }
+ </style>
 </head>
 <body>
   <div style="text-align: center;">
@@ -241,7 +250,7 @@
   <div id="dashboard">
     <h1>📁 Dashboard Personale</h1>
     <input id="search" type="text" placeholder="Cerca link...">
-		<div class="tree-wrapper">
+		<div class="tree-container">
 	  <div class="tree">
 		<ul>
 		  <li>
