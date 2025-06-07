@@ -1,61 +1,63 @@
 	// script.js
 
-	function decodeBase64(str) {
+		export function decodeBase64(str) {
 	  return atob(str);
 	}
 
-	function setCookie(name, value) {
+	export function setCookie(name, value) {
 	  document.cookie = name + "=" + (value || "") + "; path=/; SameSite=Lax";
 	}
 
-	function getCookie(name) {
+	export function getCookie(name) {
 	  const nameEQ = name + "=";
 	  const ca = document.cookie.split(';');
 	  for (let i = 0; i < ca.length; i++) {
-		let c = ca[i];
-		while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-		if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+		let c = ca[i].trim();
+		if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
 	  }
 	  return null;
 	}
 
-	function eraseCookie(name) {
+	export function eraseCookie(name) {
 	  document.cookie = name + '=; Max-Age=-99999999;';
 	}
 
-	function checkLogin() {
+	export function checkLogin() {
 	  const encryptedPass = "MTIzNDU=";
 	  const input = document.getElementById("password").value.trim();
 	  if (input === decodeBase64(encryptedPass)) {
 		setCookie("session", "ok");
 		document.getElementById("loginContainer").style.display = "none";
 		document.getElementById("dashboard").style.display = "block";
-		loadLinks();
-		loadNews();
+		window.loadLinks();
+		window.loadNews();
 	  } else {
 		alert("Password errata");
 	  }
 	}
 
-	function logout() {
+	export function logout() {
 	  eraseCookie("session");
 	  document.getElementById("dashboard").style.display = "none";
 	  document.getElementById("loginContainer").style.display = "flex";
 	  document.getElementById("password").value = "";
 	}
 
-	document.getElementById("search").addEventListener("input", function(e) {
+	export function toggleDarkMode() {
+	  document.body.classList.toggle("dark-mode");
+	}
+
+	export function handleSearch(e) {
 	  const searchTerm = e.target.value.toLowerCase();
 	  document.querySelectorAll(".category").forEach(cat => {
 		cat.style.display = cat.innerText.toLowerCase().includes(searchTerm) ? "block" : "none";
 	  });
-	});
+	}
 
-	document.getElementById("toggleDark").addEventListener("click", () => {
-	  document.body.classList.toggle("dark-mode");
-	});
+	export function initSession(loadLinks, loadNews) {
+	  window.loadLinks = loadLinks;
+	  window.loadNews = loadNews;
 
-	window.addEventListener("DOMContentLoaded", () => {
 	  if (getCookie("session") === "ok") {
 		document.getElementById("loginContainer").style.display = "none";
 		document.getElementById("dashboard").style.display = "block";
@@ -65,5 +67,4 @@
 		document.getElementById("loginContainer").style.display = "flex";
 		document.getElementById("dashboard").style.display = "none";
 	  }
-	});
-
+	}
