@@ -1,6 +1,6 @@
 	// script.js
 
-		export function decodeBase64(str) {
+	export function decodeBase64(str) {
 	  return atob(str);
 	}
 
@@ -23,19 +23,18 @@
 	}
 
 	export function checkLogin() {
-	  const encryptedPass = "MTIzNDU=";
+	  const encryptedPass = "MTIzNDU="; // 12345
 	  const input = document.getElementById("password").value.trim();
 	  if (input === decodeBase64(encryptedPass)) {
 		setCookie("session", "ok");
 		document.getElementById("loginContainer").style.display = "none";
 		document.getElementById("dashboard").style.display = "block";
-		if (typeof window.loadLinks === "function") window.loadLinks();
-		if (typeof window.loadNews === "function") window.loadNews();
+		window.loadLinks();
+		window.loadNews();
 	  } else {
 		alert("Password errata");
 	  }
 	}
-
 
 	export function logout() {
 	  eraseCookie("session");
