@@ -1,11 +1,12 @@
-	import { checkLogin, logout, toggleDarkMode, handleSearch, initSession } from './script.js';
 	import { loadNews } from './news.js';
 	import { loadLinks } from './data.js';
+	import { checkLogin, logout, toggleDarkMode, handleSearch, initSession } from './script.js';
+
+	window.checkLogin = checkLogin;
+	window.logout = logout;
 
 	document.getElementById("toggleDark").addEventListener("click", toggleDarkMode);
 	document.getElementById("search").addEventListener("input", handleSearch);
-	document.getElementById("loginBtn").addEventListener("click", checkLogin);
-	document.getElementById("logoutButton").addEventListener("click", logout);
 
 	window.addEventListener("DOMContentLoaded", () => {
 	  initSession(loadLinks, loadNews);
