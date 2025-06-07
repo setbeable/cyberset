@@ -29,12 +29,13 @@
 		setCookie("session", "ok");
 		document.getElementById("loginContainer").style.display = "none";
 		document.getElementById("dashboard").style.display = "block";
-		window.loadLinks();
-		window.loadNews();
+		if (typeof window.loadLinks === "function") window.loadLinks();
+		if (typeof window.loadNews === "function") window.loadNews();
 	  } else {
 		alert("Password errata");
 	  }
 	}
+
 
 	export function logout() {
 	  eraseCookie("session");
