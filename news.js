@@ -1,6 +1,6 @@
 	// news.js
 
-		async function loadNews() {
+	export async function loadNews() {
 	  const feedUrls = [
 		"https://www.acn.gov.it/feed",
 		"https://www.redhotcyber.com/feed/",
@@ -9,24 +9,42 @@
 		"https://feeds.feedburner.com/KrebsOnSecurity",
 		"https://www.bleepingcomputer.com/feed/"
 	  ];
+
 	  const proxy = "https://api.allorigins.win/get?url=";
 	  const newsList = document.getElementById("newsList");
-	  newsList.innerHTML = ""; // svuota per evitare duplicazioni
+	  newsList.innerHTML = ''; // Pulisce la lista
+
 	  for (let url of feedUrls) {
 		try {
-		  const res = await fetch(proxy + encodeURIComponent(url));
-		  const rss = new window.DOMParser().parseFromString(JSON.parse(await res.text()).contents, "text/xml");
-		  const items = rss.querySelectorAll("item");
-		  for (let i = 0; i < Math.min(2, items.length); i++) {
-			const title = items[i].querySelector("title").textContent;
-			const link = items[i].querySelector("link").textContent;
+		  const response = await fetch(proxy + encodeURIComponent(url));
+		  const json = await response.json();
+		  const xml = new window.DOMParser().parseFromString(json.contents, "text/xml");
+		  const items = xml.querySelectorAll("item");
+		  const siteTitle = xml.querySelector("channel > title")?.textContent || "Sito";
+
+		  for (let i = 0; i < Math.min(3, items.length); i++) {
+			const item = items[i];
+			const title = item.querySelector("title")?.textContent || "Senza titolo";
+			const link = item.querySelector("link")?.textContent || "#";
+			const pubDate = item.querySelector("pubDate")?.textContent;
+			const date = pubDate ? new Date(pubDate).toLocaleDateString('it-IT') : "Data sconosciuta";
+
 			const li = document.createElement("li");
-			li.innerHTML = `<a href="${link}" target="_blank">🟢 ${title}</a>`;
+			li.innerHTML = `
+			  <p style="margin-bottom: 8px;">
+				<strong>🟢 ${siteTitle}</strong><br>
+				<a href="${link}" target="_blank" style="text-decoration: none; font-weight: bold;">
+				  ${title}
+				</a><br>
+				<small style="color: gray;">📅 ${date}</small>
+			  </p>
+			`;
 			newsList.appendChild(li);
 		  }
 		} catch (e) {
-		  console.warn("Errore caricamento feed", url);
+		  console.warn("Errore caricamento feed:", url, e);
 		}
 	  }
 	}
+
 	setInterval(loadNews, 600000); // ogni 10 minuti
