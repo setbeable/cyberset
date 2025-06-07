@@ -10,8 +10,6 @@
 		"https://www.bleepingcomputer.com/feed/"
 	  ];
 
-	export async function loadNews() {
-	  const feedUrls = [/* ... */];
 	  const proxy = "https://api.allorigins.win/get?url=";
 	  const newsList = document.getElementById("newsList");
 	  newsList.innerHTML = '';
@@ -24,7 +22,7 @@
 		  const items = xml.querySelectorAll("item");
 		  const siteTitle = xml.querySelector("channel > title")?.textContent || "Sito";
 
-		  for (let i = 0; i < Math.min(3, items.length); i++) {
+		  for (let i = 0; i < Math.min(2, items.length); i++) {
 			const item = items[i];
 			const title = item.querySelector("title")?.textContent || "Senza titolo";
 			const link = item.querySelector("link")?.textContent || "#";
@@ -39,7 +37,8 @@
 				  ${title}
 				</a><br>
 				<small style="color: gray;">📅 ${date}</small>
-			  </p>`;
+			  </p>
+			`;
 			newsList.appendChild(li);
 		  }
 		} catch (e) {
