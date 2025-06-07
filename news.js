@@ -10,9 +10,11 @@
 		"https://www.bleepingcomputer.com/feed/"
 	  ];
 
+	export async function loadNews() {
+	  const feedUrls = [/* ... */];
 	  const proxy = "https://api.allorigins.win/get?url=";
 	  const newsList = document.getElementById("newsList");
-	  newsList.innerHTML = ''; // Pulisce la lista
+	  newsList.innerHTML = '';
 
 	  for (let url of feedUrls) {
 		try {
@@ -37,8 +39,7 @@
 				  ${title}
 				</a><br>
 				<small style="color: gray;">📅 ${date}</small>
-			  </p>
-			`;
+			  </p>`;
 			newsList.appendChild(li);
 		  }
 		} catch (e) {
@@ -46,5 +47,3 @@
 		}
 	  }
 	}
-
-	setInterval(loadNews, 600000); // ogni 10 minuti
