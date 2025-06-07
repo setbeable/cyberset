@@ -5,6 +5,7 @@
 	window.checkLogin = checkLogin;
 	window.logout = logout;
 
+	document.getElementById("loginButton").addEventListener("click", checkLogin);
 	document.getElementById("toggleDark").addEventListener("click", toggleDarkMode);
 	document.getElementById("search").addEventListener("input", handleSearch);
 
