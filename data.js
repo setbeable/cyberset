@@ -46,3 +46,21 @@
 		{ "name": "Violent Python (Libro)", "url": "https://www.amazon.com/Violent-Python-Cookbook-Penetration-Engineers/dp/1597499579", "icon": "fa-book" }
 	  ]
 	};
+	function loadLinks() {
+	  const container = document.getElementById("categories");
+	  container.innerHTML = "";
+	  for (let category in data) {
+		const catDiv = document.createElement("div");
+		catDiv.className = "category";
+		catDiv.innerHTML = `<h2>${category}</h2>`;
+		const ul = document.createElement("ul");
+		ul.className = "link-list";
+		data[category].forEach(link => {
+		  const li = document.createElement("li");
+		  li.innerHTML = `<i class='fas ${link.icon}'></i> <a href='${link.url}' target='_blank'>${link.name}</a>`;
+		  ul.appendChild(li);
+		});
+		catDiv.appendChild(ul);
+		container.appendChild(catDiv);
+	  }
+	}	
