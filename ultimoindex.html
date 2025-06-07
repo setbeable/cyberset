@@ -1,0 +1,49 @@
+	<!DOCTYPE html>
+	<html lang="it">
+	<head>
+	  <meta charset="UTF-8">
+	  <title>Cyber Set Page</title>
+	  <link rel="stylesheet" href="style.css">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	</head>
+	<body>
+	  <div style="text-align: center;">
+		<h1 style="margin-top: 0;">Cyber Set Page</h1>
+	  </div>
+
+	  <div id="loginContainer">
+		<h2>Accesso</h2>
+		<input type="password" id="password" placeholder="Inserisci password">
+		<button id="loginButton">Accedi</button>
+
+	  </div>
+
+	  <div id="dashboard">
+		<h1>📁 Dashboard Personale</h1>
+		<input id="search" type="text" placeholder="Cerca link...">
+
+		<div class="tree-container">
+		  <div class="tree"> ... (alberatura come già tua) ... </div>
+		</div>
+
+		<button id="toggleDark">🌃</button>
+		<button id="logoutButton">🔒 Logout</button>
+
+		<div id="dashboard-content">
+		  <div id="newsFeed">
+			<button class="close-btn" onclick="document.getElementById('newsFeed').style.display='none'">×</button>
+			<h3>📰 Cybersecurity News</h3>
+			<ul id="newsList"></ul>
+		  </div>
+		  <div id="categories"></div>
+		</div>
+
+		<footer>
+		  <p>🔗 Seguici su <a href="#">LinkedIn</a> | <a href="#">GitHub</a> | <a href="#">Twitter</a></p>
+		  <p>© 2025 Cyber Security Dashboard — <strong>@set</strong></p>
+		</footer>
+	  </div>
+
+		  <script type="module" src="main.js"></script>
+	</body>
+	</html>
