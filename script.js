@@ -23,7 +23,7 @@
 	}
 
 	export function checkLogin() {
-	  const encryptedPass = "MTIzNDU="; // 12345
+	  const encryptedPass = "MTIzNDU=";
 	  const input = document.getElementById("password").value.trim();
 	  if (input === decodeBase64(encryptedPass)) {
 		setCookie("session", "ok");
