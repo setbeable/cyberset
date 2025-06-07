@@ -306,7 +306,7 @@
         "https://feeds.feedburner.com/KrebsOnSecurity",
         "https://www.bleepingcomputer.com/feed/"
       ];
-      const proxy = "https://api.allorigins.win/get?url=";
+      const proxy = "https://api.codetabs.com/v1/proxy/?quest=";
       const newsList = document.getElementById("newsList");
       for (let url of feedUrls) {
         try {
@@ -320,9 +320,12 @@
             li.innerHTML = `<a href="${link}" target="_blank">🟢 ${title}</a>`;
             newsList.appendChild(li);
           }
-        } catch (e) {
-          console.warn("Errore caricamento feed", url);
-        }
+			} catch (e) {
+		  console.warn("Errore caricamento feed:", url, e);
+		  const li = document.createElement("li");
+		  li.textContent = `⚠️ Impossibile caricare notizie da ${url}`;
+		  newsList.appendChild(li);
+		}
       }
     }
     window.addEventListener("DOMContentLoaded", loadNews);
