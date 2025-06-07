@@ -1,19 +1,17 @@
 	// news.js
 
-	const feedUrls = [
-	  "https://www.acn.gov.it/feed",
-	  "https://www.redhotcyber.com/feed/",
-	  "https://www.cybersecurity360.it/feed/",
-	  "https://thehackernews.com/feeds/posts/default?alt=rss",
-	  "https://feeds.feedburner.com/KrebsOnSecurity",
-	  "https://www.bleepingcomputer.com/feed/"
-	];
-
-	async function loadNews() {
+		async function loadNews() {
+	  const feedUrls = [
+		"https://www.acn.gov.it/feed",
+		"https://www.redhotcyber.com/feed/",
+		"https://www.cybersecurity360.it/feed/",
+		"https://thehackernews.com/feeds/posts/default?alt=rss",
+		"https://feeds.feedburner.com/KrebsOnSecurity",
+		"https://www.bleepingcomputer.com/feed/"
+	  ];
 	  const proxy = "https://api.allorigins.win/get?url=";
 	  const newsList = document.getElementById("newsList");
-	  newsList.innerHTML = "";
-
+	  newsList.innerHTML = ""; // svuota per evitare duplicazioni
 	  for (let url of feedUrls) {
 		try {
 		  const res = await fetch(proxy + encodeURIComponent(url));
@@ -30,6 +28,5 @@
 		  console.warn("Errore caricamento feed", url);
 		}
 	  }
-	} 
-
+	}
 	setInterval(loadNews, 600000); // ogni 10 minuti
