@@ -1,10 +1,10 @@
-	<!DOCTYPE html>
+		<!DOCTYPE html>
 	<html lang="it">
 	<head>
-	  <meta charset="UTF-8">
+	  <meta charset="UTF-8" />
 	  <title>Cyber Set Page</title>
-	  <link rel="stylesheet" href="style.css">
-	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	  <link rel="stylesheet" href="style.css" />
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 	</head>
 	<body>
 	  <div style="text-align: center;">
@@ -13,46 +13,22 @@
 
 	  <div id="loginContainer">
 		<h2>Accesso</h2>
-		<input type="password" id="password" placeholder="Inserisci password">
-		<button onclick="checkLogin()">Accedi</button>
+		<input type="password" id="password" placeholder="Inserisci password" />
+		<button id="loginBtn">Accedi</button>
 	  </div>
 
 	  <div id="dashboard">
 		<h1>📁 Dashboard Personale</h1>
-		<input id="search" type="text" placeholder="Cerca link...">
+		<input id="search" type="text" placeholder="Cerca link..." />
 
 		<div class="tree-container">
 		  <div class="tree">
-			<ul>
-			  <li>
-				<a href="#">Menu</a>
-				<ul>
-				  <li><a href="#">Sezione 1</a>
-					<ul>
-					  <li><a href="https://esempio.com/a">Link A</a></li>
-					  <li><a href="https://esempio.com/b">Link B</a></li>
-					</ul>
-				  </li>
-				  <li><a href="#">Sezione 2</a>
-					<ul>
-					  <li><a href="https://esempio.com/c">Link C</a></li>
-					  <li><a href="https://esempio.com/d">Link D</a></li>
-					</ul>
-				  </li>
-				  <li><a href="#">Sezione 3</a>
-					<ul>
-					  <li><a href="https://esempio.com/e">Link E</a></li>
-					  <li><a href="https://esempio.com/f">Link F</a></li>
-					</ul>
-				  </li>
-				</ul>
-			  </li>
-			</ul>
+			<!-- struttura ad albero... -->
 		  </div>
 		</div>
 
 		<button id="toggleDark">🌃</button>
-		<button id="logoutButton" onclick="logout()">🔒 Logout</button>
+		<button id="logoutButton">🔒 Logout</button>
 
 		<div id="dashboard-content">
 		  <div id="newsFeed">
@@ -69,7 +45,6 @@
 		</footer>
 	  </div>
 
-		<script type="module" src="main.js"></script>
+	  <script type="module" src="main.js"></script>
 	</body>
 	</html>
-
